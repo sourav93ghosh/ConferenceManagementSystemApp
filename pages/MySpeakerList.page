@@ -1,0 +1,113 @@
+<apex:page controller="MySpeakerList_Controller" sidebar="false" showHeader="false" title="Speaker List">
+
+  <apex:stylesheet value="{! $Resource.CSSFile}"/>
+  <apex:includeScript value="{! $Resource.JSFile}"/>
+  <apex:includeScript value="{! $Resource.jQueryFile}"/>
+   
+   <head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" media="print" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+   </head> 
+   
+  <script>  
+        function dropdown(){
+            document.getElementById("menu").style.display = "block";
+        }
+        function vanish(){
+            document.getElementById("menu").style.display = "none";
+        }
+  </script> 
+   
+  <apex:form >
+  
+    <!--  <apex:actionFunction name="SearchSpeaker" action="{! searchAction}" reRender="search">
+          <apex:param value="" name="sp" assignTo="{! spNumber}"/>
+      </apex:actionFunction> -->
+        
+      <!-- Navigationbar -->
+      <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+              <ul class="nav navbar-nav">
+                  <li class="active"><a href="MySpeakerList">MySpeaker</a></li>
+                  <li><a href="MySessionList">MySession</a></li> 
+                  <li class="dropdown" onmouseover="dropdown()" onmouseout="vanish()">
+                      <a href="#">More
+                      <span class="caret"></span></a>
+                      <ul id="menu" class="dropdown-menu" style="display: none">
+                          <li style="margin-left: 0px"><a href="CreateNewSpeaker">Create Speaker</a></li>
+                          <li style="margin-left: 0px"><a href="CreateNewSessoin">Create Session</a></li>
+                          <li style="margin-left: 0px"><a href="CreateSpeakerSession">Assign Speaker</a></li>
+                      </ul>
+                  </li> 
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <li>
+                     <apex:inputText style="margin-top: 10px; width: 300px;" styleClass="form-control" html-placeholder="Type Speaker Name {SP-0000}" id="src" value="{! spNumber}"/>
+                 
+                   <!--  <input type="text" style="margin-top: 10px; width: 300px;" styleClass="form-control" placeholder="Type Speaker Name {SP-0000}" id="src"/> 
+                  -->
+                  </li>
+                  <li>
+                      <apex:commandButton style="margin-top: 13px;margin-left: -20px;display: none" Value="Search" action="{! searchAction}"/>
+                  </li>
+                  <li>
+                      <a href="#" data-toggle="modal" data-target="#myModal">Logout</a>
+                      <div id="myModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+                          <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h4 style="margin-left: 30%">Do You want to Logout?</h4><br/><br/>
+                                    <a style="margin-left: 40%" href="/secur/logout.jsp">Yes</a>&nbsp;&nbsp;
+                                    <a href="#" data-dismiss="modal">No</a>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                  </li>
+              </ul>
+          </div>
+       </nav>
+       
+       <apex:pageBlock title="My Speaker List" tabStyle="Speaker__c" rendered="{! !ren}">
+           <apex:pageBlockButtons location="top">
+               <apex:commandButton value="Previous" disabled="{! disabledPrev}" action="{! previousPage}"/>
+               <apex:commandButton value="Next" disabled="{! disabledNext}" action="{! nextPage}"/>
+           </apex:pageBlockButtons>               
+           <apex:pageBlockTable value="{! speakers}" var="sp" id="spList">       
+               <apex:column headerValue="Speaker Name">
+             <!--      <apex:commandLink value="{! sp.Name}" action="{! assignSpeakerName}">
+                       <apex:param assignTo="{! speakerName}" name="param" value="{! sp.Name}"/>
+                   </apex:commandLink> -->
+                   <apex:outputLink value="/apex/SpeakerDetail?id={! sp.ID}">{! sp.Name}</apex:outputLink>
+               </apex:column>
+               <apex:column value="{! sp.First_Name__c}"/>
+               <apex:column value="{! sp.Last_Name__c}"/>
+               <apex:column value="{! sp.Email__c}"/>
+           </apex:pageBlockTable>
+       <!--    <br/>
+           <apex:pageBlockTable value="{! sessionsByName}" var="s" rendered="{! flag}" id="sessions">
+               <apex:column value="{! s.Session__r.Name}"/>
+               <apex:column value="{! s.Speaker__r.Name}"/>
+               <apex:column value="{! s.Session__r.Date_and_Time__c}"/>
+           </apex:pageBlockTable>
+           <apex:outputLabel style="color: red" value="{! errMsg}"></apex:outputLabel>  -->
+       </apex:pageBlock> 
+       
+       <apex:pageBlock title="Search Results" rendered="{! ren}" tabStyle="Speaker__c" id="search">
+           <apex:pageBlockTable value="{! result}" var="r" rendered="{! flag}">       
+               <apex:column >
+                   <apex:outputLink value="/apex/SpeakerDetail?id={! r.ID}">{! r.Name}</apex:outputLink>
+               </apex:column>
+               <apex:column value="{! r.First_Name__c}"/>
+               <apex:column value="{! r.Last_Name__c}"/>
+               <apex:column value="{! r.Email__c}"/>
+           </apex:pageBlockTable>
+           <apex:outputLabel rendered="{! !flag}" style="color: red">{! 'Nothing Found!'}</apex:outputLabel>
+       </apex:pageBlock>
+      
+  </apex:form>  
+  
+</apex:page>

@@ -1,0 +1,16 @@
+<apex:page standardController="Session__c" sidebar="false">
+  <apex:form >
+      <apex:pageBlock title="Edit Session">
+          <apex:pageBlockSection title="Session Detail" columns="1">
+              <apex:inputField value="{! Session__c.Name}" required="true"/>
+              <apex:inputField value="{! Session__c.Date_and_Time__c}"/>
+              <apex:inputField value="{! Session__c.Description__c}"/>
+              <apex:inputField value="{! Session__c.Level__c}"/>
+          </apex:pageBlockSection>
+          <apex:pageBlockButtons >
+              <apex:commandButton value="Update Record" action="{! save}"/>
+              <apex:commandButton value="Cancel" action="{! Cancel}"/>
+          </apex:pageBlockButtons>
+      </apex:pageBlock>
+  </apex:form>
+</apex:page>

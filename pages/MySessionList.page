@@ -1,0 +1,101 @@
+<apex:page controller="MySessionList_Controller" sidebar="false" showHeader="false" title="Session List">
+
+  <apex:stylesheet value="{! $Resource.CSSFile}"/>
+  <apex:includeScript value="{! $Resource.JSFile}"/>
+  <apex:includeScript value="{! $Resource.jQueryFile}"/>
+  
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" media="print" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</head> 
+  
+  <script>  
+        function dropdown(id){
+            if(id == 'more')
+                document.getElementById("menu").style.display = "block";
+            if(id == 'exp')
+                document.getElementById("exp-menu").style.display = "block";
+        }
+        function vanish(id){
+            if(id == 'more')
+                document.getElementById("menu").style.display = "none";
+            if(id == 'exp')
+                document.getElementById("exp-menu").style.display = "none";
+        }  
+         
+    </script>
+  
+  <apex:form >
+      <!-- Navigationbar -->
+      <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+              <ul class="nav navbar-nav">
+                  <li><a href="MySpeakerList">MySpeaker</a></li>
+                  <li class="active"><a href="MySessionList">MySession</a></li>
+                  <li class="dropdown" onmouseover="dropdown(this.id)" onmouseout="vanish(this.id)" id="more">
+                      <a href="#">More
+                      <span class="caret"></span></a>
+                      <ul id="menu" class="dropdown-menu" style="display: none">
+                          <li style="margin-left: 0px"><a href="CreateNewSpeaker">Create Speaker</a></li>
+                          <li style="margin-left: 0px"><a href="CreateNewSessoin">Create Session</a></li>
+                          <li style="margin-left: 0px"><a href="CreateSpeakerSession">Assign Speaker</a></li>
+                          <li style="margin-left: 0px" class="dropdown" onmouseover="dropdown(this.id)" onmouseout="vanish(this.id)" id="exp"><a href="#">Export to Excel</a>
+                              <ul id="exp-menu" class="dropdown-menu" style="display: none;margin-left: 100%;margin-top: -15%">
+                                  <li style="margin-left: 0px"><a href="AllSessions">All Sessions</a></li>
+                                  <li style="margin-left: 0px"><a href="UpcomingSessions">All Upcoming Sessions</a></li>
+                                  <li style="margin-left: 0px"><a href="EndSessions">All Completed Sessions</a></li>  
+                              </ul>
+                          </li>
+                      </ul>
+                  </li>  
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <li>
+                      <a href="#" data-toggle="modal" data-target="#myModal">Logout</a>
+                      <div id="myModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+                          <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h4 style="margin-left: 30%">Do You want to Logout?</h4><br/><br/>
+                                    <a style="margin-left: 40%" href="/secur/logout.jsp">Yes</a>&nbsp;&nbsp;
+                                    <a href="#" data-dismiss="modal">No</a>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                  </li>
+              </ul>
+          </div>
+       </nav>
+       
+       <apex:pageBlock title="My Session List" tabStyle="Session__c">
+           <apex:pageBlockButtons location="top">
+               <apex:commandButton value="Previous" disabled="{! disabledPrev}" action="{! previousPage}"/>
+               <apex:commandButton value="Next" disabled="{! disabledNext}" action="{! nextPage}"/>
+           </apex:pageBlockButtons>
+           <apex:outputLabel style="color: red" value="{! errMsg}" />
+           <apex:pageBlockTable value="{! sessions}" var="s">
+               <apex:column headerValue="Session Name">
+                   <apex:commandLink value="{! s.Name}"/>
+               </apex:column>
+               <apex:column value="{! s.Date_and_Time__c}"/>
+               <apex:column value="{! s.Description__c}"/>
+               <apex:column value="{! s.Duration__c}"/>
+               <apex:column headerValue="Status">
+                   <apex:outputField value="{! s.Status__c}"><apex:inlineEditSupport /></apex:outputField>
+               </apex:column> 
+               <apex:column value="{! s.Level__c}"/>
+               <apex:column headerValue="Action">
+                   <apex:commandLink value="Update" action="{! updateReq}">
+                        <apex:param value="{! s.Name}" name="prm" assignTo="{! sName}"/>
+                   </apex:commandLink> 
+               </apex:column>
+           </apex:pageBlockTable>
+       </apex:pageBlock>
+      
+  </apex:form>  
+  
+</apex:page>

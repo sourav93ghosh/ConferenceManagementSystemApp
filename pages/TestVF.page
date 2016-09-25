@@ -1,0 +1,34 @@
+<!-- <apex:page controller="TestApex">
+  <apex:form >
+  
+  <apex:commandLink value="ClickMe" action="{! doSomething}">
+      <apex:param assignTo="{! testVar}" value="Hello" name="prm"/>
+  </apex:commandLink>
+
+  <apex:outputLabel >{! testVar}</apex:outputLabel>
+  
+  </apex:form>
+</apex:page> -->
+<apex:page controller="TestApex">
+
+<script>
+function func(){
+    JSfunc(document.getElementById('{! $Component.form.text}').value);
+    return false;
+}
+</script>
+
+<apex:form id="form">
+<apex:actionFunction name="JSfunc" reRender="panel" action="{! test}">
+<apex:param value="" name="prm"/>
+</apex:actionFunction>
+
+<apex:inputText id="text"/>
+<apex:commandButton value="test ajax" onclick="return func()"/>
+
+<apex:outputPanel id="panel">
+{! text}
+</apex:outputPanel>
+</apex:form>
+
+</apex:page>
