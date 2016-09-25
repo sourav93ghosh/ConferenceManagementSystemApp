@@ -1,8 +1,0 @@
-<apex:page standardController="Speaker__c" sidebar="false">
-  <apex:pageBlock title="View Speaker">
-      <apex:pageBlockSection title="Speaker Detail" columns="1" collapsible="false">
-          <apex:detail relatedList="false" title="false"/>
-      </apex:pageBlockSection>
-      
-  </apex:pageBlock>
-</apex:page>
